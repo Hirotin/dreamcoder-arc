@@ -48,7 +48,7 @@ wandb_config = args.copy()
 wandb_config['hostname'] = os.uname()[1]
 run = wandb.init(
     # set the wandb project where this run will be logged
-    project="arc",
+    project="dc_arc",
     # track hyperparameters and run metadata
     config=wandb_config,
     save_code=True,
@@ -86,9 +86,9 @@ run.define_metric('recog-class-loss', summary='min', goal='minimise', step_metri
 # iterate over wake and sleep cycles for our task
 os.makedirs('./experimentOutputs/arc/', exist_ok=True)
 generator = ecIterator(grammar,
-                       training,
-                       testingTasks=[],
-                       outputPrefix='./experimentOutputs/arc/',
+                        training,
+                        testingTasks=[],
+                        outputPrefix='./experimentOutputs/arc/',
                        **args)
 
 def test_evaluate(task, soln):

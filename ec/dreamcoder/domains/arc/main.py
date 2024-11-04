@@ -74,6 +74,10 @@ class MikelArcNet(nn.Module):
         # (num_examples, num_colors, h, w) to (num_examples, intermediate_dim)
         x = x.to(torch.float32)
         y = y.to(torch.float32)
+        if not x.device == torch.device('cuda'):
+            x = x.to(torch.device('cuda'))
+        if not y.device == torch.device('cuda'):
+            y = y.to(torch.device('cuda'))
         # print(x.shape, y.shape)
         try:
             # x = self.model(x)
@@ -88,6 +92,7 @@ class MikelArcNet(nn.Module):
             y = self.output(y)
         except:
             # print(x, y)
+            import IPython;IPython.embed();exit()
             raise
 
         diff = y - x
