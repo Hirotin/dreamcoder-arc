@@ -371,7 +371,7 @@ def solveForTask_ocaml(_=None,
     except:
         eprint("response:", response)
         eprint("error:", error)
-        with open("message", "w") as f:
+        with open("kaggle/working/message", "w") as f:
             f.write(message)
         eprint("message,", message)
         assert False, "MAX RAISE"

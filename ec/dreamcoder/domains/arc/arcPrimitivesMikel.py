@@ -3,7 +3,7 @@ from dreamcoder.type import arrow, baseType, tint, tlist, t0, t1, t2, tboolean
 from dreamcoder.task import Task
 from dreamcoder.grammar import Grammar
 from dreamcoder.program import Primitive
-
+import os
 from scipy.ndimage import binary_dilation
 from scipy.ndimage import measurements
 from math import sin,cos,radians,copysign
@@ -847,14 +847,17 @@ primitives = list(primitive_dict.values())
 
 def generate_ocaml_primitives():
     lines = [p.ocaml_string() + '\n' for p in primitive_dict.values()]
-
-    with open("solvers/program.ml", "r") as f:
-        contents = f.readlines()
+    if not os.path.exists("kaggle/working/solvers/program.ml"):
+        with open("solvers/program.ml", "r") as f:
+            contents = f.readlines()
+    else:
+        with open("kaggle/working/solvers/program.ml", "r") as f:
+            contents = f.readlines()
 
     start_ix = min([i for i in range(len(contents)) if contents[i][0:7] == '(* AUTO'])
     end_ix = min([i for i in range(len(contents)) if contents[i][0:11] == '(* END AUTO'])
     contents = contents[0:start_ix+1] + lines + contents[end_ix:]
-
-    with open("solvers/program.ml", "w") as f:
+    
+    with open("kaggle/working/solvers/program.ml", "w") as f:
         f.write(''.join(contents))
 

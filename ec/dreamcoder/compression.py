@@ -226,7 +226,7 @@ def rustInduce(g0, frontiers, _=None,
 
     messageJson = json.dumps(message)
 
-    with open("jsonDebug", "w") as f:
+    with open("kaggle/working/jsonDebug", "w") as f:
         f.write(messageJson)
 
     # check which version of python we are using

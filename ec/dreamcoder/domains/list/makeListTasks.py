@@ -3,7 +3,7 @@
 from dreamcoder.type import *
 from dreamcoder.task import Task
 from dreamcoder.utilities import eprint, hashable
-
+import os
 from random import randint, random, seed
 from itertools import product
 
@@ -549,8 +549,9 @@ def exportTasks():
     eprint("Downloading and generating dataset")
     tasks = sorted(make_list_tasks(n_examples), key=lambda t: t.name)
     eprint("Got {} list tasks".format(len(tasks)))
-
-    with open("data/list_tasks.pkl", "w") as f:
+    if not os.path.exists("kaggle/working/data"):
+        os.makedirs("kaggle/working/data")
+    with open("kaggle/working/data/list_tasks.pkl", "w") as f:
         pickle.dump(tasks, f)
     eprint("Wrote list tasks to data/list_tasks.pkl")
 

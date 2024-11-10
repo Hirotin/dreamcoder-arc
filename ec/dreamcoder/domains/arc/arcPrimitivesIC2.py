@@ -222,9 +222,14 @@ class DSL:
 
     def generate_ocaml_primitives(self):
         primitives = list(self.primitives.values())
-
-        with open("../solvers/program.ml", "r") as f:
-            contents = f.readlines()
+        if os.path.exists("kaggle/working/solvers"):
+            os.mkdir("kaggle/working/solvers")
+        if not os.path.exists("kaggle/working/solvers/program.ml"):
+            with open("../solvers/program.ml", "r") as f:
+                contents = f.readlines()
+        else:
+            with open("kaggle/working/solvers/program.ml", "r") as f:
+                contents = f.readlines()
 
         start_ix = min([i for i in range(len(contents)) if contents[i][0:7] == '(* AUTO'])
         end_ix = min([i for i in range(len(contents)) if contents[i][0:11] == '(* END AUTO'])
@@ -242,8 +247,8 @@ class DSL:
                 print('Primitive {} already exists, skipping ocaml code generation for it'.format(p.name))
 
         contents = contents[0:start_ix+1] + lines + contents[end_ix:]
-
-        with open("../solvers/program.ml", "w") as f:
+        
+        with open("kaggle/working/solvers/program.ml", "w") as f:
             f.write(''.join(contents))
 
 dsl = DSL(typemap, verbose=False)
