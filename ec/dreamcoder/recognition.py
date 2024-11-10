@@ -19,11 +19,10 @@ try:
 except:
     eprint("WARNING: Could not import np. This is only okay when doing pypy compression.")
     
-import wandb
+# import wandb
 import time
 import dill
 import json
-
 
 def variable(x, volatile=False, cuda=False):
     if isinstance(x, list):
@@ -92,6 +91,7 @@ class GrammarNetwork(nn.Module):
 
         B = xs.size(0)
         assert len(summaries) == B
+        self.logProductions = self.logProductions.to(xs.device)
         logProductions = self.logProductions(xs)
 
         # uses[b][p] is # uses of primitive p by summary b
@@ -705,8 +705,16 @@ class RecognitionModel(nn.Module):
             return u
         u = uses(ls)
         u[u > 1.] = 1.
-        if self.use_cuda: u = u.cuda()
-        # print(u.mean().item())
+        # uをuse_cudaがTrueのときにCUDAデバイスへ移動
+        if self.use_cuda:
+            u = u.cuda()
+
+        # uがCUDA上にある場合にfeaturesもCUDAへ移動
+        if u.is_cuda:
+            features = features.cuda()
+        else:
+            features = features.cpu()
+        # 補助損失を計算
         al = self._auxiliaryLoss(self._auxiliaryPrediction(features), u)
         return al
             
@@ -825,6 +833,8 @@ class RecognitionModel(nn.Module):
             g = self(features)
             return - entry.program.logLikelihood(g), al
         else:
+            self._MLP = self._MLP.cuda()
+            features = features.cuda()
             features = self._MLP(features).unsqueeze(0)
             
             # print("batchedloglikelihoods")
@@ -1097,10 +1107,10 @@ class RecognitionModel(nn.Module):
                         
             if (i == 1 or i % 50 == 0) and losses:
                     
-                wandb.log({"recog-loss": mean(losses), 
-                            "recog-mdl": mean(descriptionLengths),
-                            "recog-class-loss": mean(classificationLosses), 
-                            'batch': batch_i})
+                # wandb.log({"recog-loss": mean(losses), 
+                #             "recog-mdl": mean(descriptionLengths),
+                #             "recog-class-loss": mean(classificationLosses), 
+                #             'batch': batch_i})
                 batch_i += 1
                 
                 # eprint("(ID=%d): " % self.id, "Epoch", i, "Loss", mean(losses))

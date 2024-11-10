@@ -80,7 +80,7 @@ def convert_arc_task(task, include_test=False):
 
     return task
 
-def get_arc_tasks(n=None, eval=False):
+def get_arc_tasks(n=None,eval=False):
     trainset, evalset = arckit.load_data()
     dataset = evalset if eval else trainset
     if n:

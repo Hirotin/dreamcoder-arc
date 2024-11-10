@@ -1,13 +1,13 @@
-import dill
-import sys
-import time
-import traceback
-import pickle as pickle
 
 try:
     import binutil  # required to import from dreamcoder modules
 except ModuleNotFoundError:
     import bin.binutil  # alt import if called as module
+import dill
+import sys
+import time
+import traceback
+import pickle as pickle
 
 from dreamcoder.utilities import eprint
 

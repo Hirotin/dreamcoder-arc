@@ -144,3 +144,15 @@ for i, result in enumerate(generator):
         wandb.log({'test-hit1-both': hit1, 'test-hit3-both': hit3, 'iteration': i})
     else:
         wandb.log({'test-hit1': hit1, 'test-hit3': hit3, 'iteration': i})
+        
+
+#ここから三森のsolution抽出コード
+solution_sets = {}
+for task, solution in result.taskSolution.items():
+    if solution.entries:
+        #最もいい解候補を取得
+        bestprogram = solution.entries[0].program
+        solution_sets[f'{task.name}'] = bestprogram
+        #print(f'{task.name} : {bestprogram}')
+    else:
+        print(f'{task.name} : No solution found')

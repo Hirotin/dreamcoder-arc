@@ -5,7 +5,7 @@ From: ec/container.img
     export WANDB_CACHE_DIR="./wandb/cache"
     export WANDB_CONFIG_DIR="./wandb/config"
     export WANDB_DATA_DIR="./wandb/data"
-    export WANDB_API_KEY="[YOUR API KEY]"
+    export WANDB_API_KEY="49c820500369b5db19e3f73b12c0caa440a833ce"
 
 %post
 
