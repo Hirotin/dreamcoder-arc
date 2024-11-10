@@ -494,7 +494,7 @@ def ecIterator(grammar, tasks,
             
         if outputPrefix is not None:
             # Get today's date in the format you want
-            today = datetime.datetime.now()
+            today = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
             # Format the file path with the date
             path = f"kaggle_{today}.pickle"
